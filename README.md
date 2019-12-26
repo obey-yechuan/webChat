@@ -14,7 +14,7 @@ npm install
 ```
 npm run server
 ```
-> 新开` crtl + ````` `终端启动vue项目
+> 新开 crtl + ` 终端启动vue项目
 ```
 npm run serve
 ```
