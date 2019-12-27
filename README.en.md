@@ -1,7 +1,7 @@
-# Node_Vue_Framework
+# webChat
 
 #### Description
-vue及相关插件和express-generrator混合的框架
+简易聊天室
 
 #### Software Architecture
 Software architecture description
