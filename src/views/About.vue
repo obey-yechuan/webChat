@@ -12,13 +12,13 @@ export default {
     }
   },
   created(){
-    this.$axios({
-      method:'get',
-      url:'/api/aaa'
-    }).then(res=>{
-      console.log(res)
-      this.data = res.data.status
-    })
+    // this.$axios({
+    //   method:'get',
+    //   url:'/api/aaa'
+    // }).then(res=>{
+    //   console.log(res)
+    //   this.data = res.data.status
+    // })
   }
 }
 </script>
