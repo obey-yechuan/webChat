@@ -6,17 +6,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const wss= new webSocket.Server({
-  host:'192.168.1.111',
+  host:'localhost',
   port:3001,
 })
-
-let clients=[]
-
-
-function noop() {}
-function heartbeat(){
-  this.isAlive = true
-}
 
 wss.on('connection', function(ws,req){
   // console.log(wss.clients)
