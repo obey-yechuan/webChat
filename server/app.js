@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const wss= new webSocket.Server({
-  host:'127.0.0.1',
+  host:'192.168.1.111',
   port:3001,
 })
 
@@ -19,27 +19,30 @@ function heartbeat(){
 }
 
 wss.on('connection', function(ws,req){
-  ws.isAlive = true
-  ws.on('pong', heartbeat);
-
-  const interval = setInterval(function ping() {
-    wss.clients.forEach(function each(ws) {
-      if (ws.isAlive === false) return ws.terminate();
-   
-      ws.isAlive = false;
-      ws.ping(noop);
-    });
-  }, 30000);
-
-  clients.push(ws)
+  // console.log(wss.clients)
   const ip = req.connection.remoteAddress;
   const port = req.connection.remotePort;
   const clientName = ip + port;
-
-  ws.on('message',function(message){
-      ws.send(clientName+': '+message)
+  wss.clients.forEach(function(client){
+    //wss.clients为set数据结构,使用size获取数量
+    client.send('欢迎:ip为'+clientName+'的进入聊天室,当前人数为'+wss.clients.size)
   })
+
+  //接受客户端的消息
+  ws.on('message',function(message){
+    wss.clients.forEach(function(client){
+      client.send(clientName+': '+message)
+    }) 
+  })
+
+  ws.on('close',function(){
+    wss.clients.forEach(function(client){
+      client.send(`用户${clientName}离开了聊天室,当前人数${wss.clients.size}`)
+    }) 
+  })
+
 })
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
