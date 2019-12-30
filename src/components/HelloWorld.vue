@@ -5,7 +5,7 @@
 		<br>
 		<input type="text" name="message" style="width: 300px" v-model="message" @keyup.enter="enter(message)">
 		<input type="button" value="发送消息" @click="send(message)">
-		<input type="button" 
+		<input type="button" @click="clear"
 			value="清空聊天记录">
 	</form>
   </div>
@@ -44,11 +44,16 @@ export default {
 
         }
           //滚动条总保持最下端
-        
+       
 			} else {
 				alert("连接没有开启.");
 			}
     },
+
+        //清除消息
+     clear(){
+          this.tip=[]
+      },
     
     //监听enter
     enter(message){
