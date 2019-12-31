@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <div class="number">房间人数:{{roomNum}}</div>
     <div class="create" @click="createRoom">创建房间</div>
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
@@ -26,10 +27,12 @@ export default {
   },
   created(){
     this.$axios({
+      method:'get',
       url:'/api/roomNumber',
-      method:'ger'
     }).then(res=>{
-      console.log(res)
+      this.roomNum = res.data.data.roomNumber
+    }).catch(err=>{
+      console.log(err)
     })
   }
 }

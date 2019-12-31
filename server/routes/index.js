@@ -11,6 +11,12 @@ var connection = require('../util/mysqlConfig.js')
  */
 //如果报错在mysql中运行
 
+router.use(function(req,res,next){
+  res.set({'Access-Control-Allow-Origin':'*'})
+  next();
+})
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
