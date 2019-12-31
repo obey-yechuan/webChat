@@ -1,14 +1,10 @@
 var createError = require('http-errors');
 var express = require('express');
-var webSocket = require('ws')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var wss = require('./util/webSocket')
 
-const wss= new webSocket.Server({
-  host:'localhost',
-  port:3001,
-})
 
 wss.on('connection', function(ws,req){
   // console.log(wss.clients)
@@ -19,7 +15,6 @@ wss.on('connection', function(ws,req){
     //wss.clients为set数据结构,使用size获取数量
     client.send('欢迎:ip为'+clientName+'的进入聊天室,当前人数为'+wss.clients.size)
   })
-
   //接受客户端的消息
   ws.on('message',function(message){
     wss.clients.forEach(function(client){
@@ -40,6 +35,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

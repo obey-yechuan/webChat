@@ -1,6 +1,8 @@
 var express = require('express');
 var crypto = require('crypto')
 var router = express.Router();
+var wss = require('../util/webSocket')
+
 var connection = require('../util/mysqlConfig.js')
 
 /**
@@ -83,6 +85,15 @@ router.post('/login',function(req,res){
       }
     })
 
+  })
+})
+
+//获取房间数量
+router.get('/roomNumber',function(req,res){
+  res.json({
+    data:{
+      roomNumber:wss.clients.size
+    }
   })
 })
 
