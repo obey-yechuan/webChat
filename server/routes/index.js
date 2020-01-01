@@ -94,7 +94,7 @@ router.post('/login',function(req,res){
   })
 })
 
-//获取房间数量
+//获取房间人数数量
 router.get('/roomNumber',function(req,res){
   res.json({
     data:{
