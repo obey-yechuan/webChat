@@ -6,7 +6,7 @@
     </div>
     <div class="roomlist">
       <ul>
-        <li class="room" v-for="(room,index) in rooms" :key="index"  >
+        <li class="room" v-for="(room,index) in rooms" :key="index" @click = 'enter(index)'  >
           <div class="title">{{room.name}}</div>
           <div class="into">点击进入房间</div>
         </li>
@@ -17,8 +17,6 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'home',
   data() {
@@ -29,11 +27,13 @@ export default {
     }
   },
   components: {
-    HelloWorld
   },
   methods: {
     createRoom(){
       this.rooms.push({name:'aaa'})
+    },
+    enter(index){
+      this.$route.replace({name:'roomChat'})
     }
   },
   created(){
