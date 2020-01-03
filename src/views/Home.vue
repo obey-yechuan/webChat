@@ -33,7 +33,7 @@ export default {
       this.rooms.push({name:'aaa'})
     },
     enter(index){
-      this.$route.replace({name:'roomChat'})
+      this.$router.push({name:'roomChat'})
     }
   },
   created(){
