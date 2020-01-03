@@ -2,7 +2,7 @@
   <div class="home">
     <div class="info">
       <div class="number">房间人数:{{roomNum}}</div>
-      <input type="text" v-model="cusName">
+      <input type="text" v-model="cusName" placeholder="请输入房间名">
       <button class="create" @click="createRoom">创建房间</button>
     </div>
     <div class="roomlist">
@@ -32,7 +32,19 @@ export default {
   },
   methods: {
     createRoom(){
+      this.$axios({
+        method:'post',
+        url:'/users/createRoom',
+        data:{
+          roomName:this.cusName,
+          roomMaster:this.userName || 'admin'
+        }
+      }).then(res=>{
+        console.log(res)
+      })
+
       this.rooms.push({name:this.cusName})
+      this.cusName=''
     },
     enter(index){
       this.$router.push({name:'roomChat'})
