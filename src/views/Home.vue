@@ -2,6 +2,7 @@
   <div class="home">
     <div class="info">
       <div class="number">房间人数:{{roomNum}}</div>
+      <input type="text" v-model="cusName">
       <button class="create" @click="createRoom">创建房间</button>
     </div>
     <div class="roomlist">
@@ -23,14 +24,15 @@ export default {
     return {
       tip:[],
       rooms:[],
-      roomNum:''
+      roomNum:'',
+      cusName:''
     }
   },
   components: {
   },
   methods: {
     createRoom(){
-      this.rooms.push({name:'aaa'})
+      this.rooms.push({name:this.cusName})
     },
     enter(index){
       this.$router.push({name:'roomChat'})
