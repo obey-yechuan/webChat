@@ -8,7 +8,8 @@
     <div class="roomlist">
       <ul>
         <li class="room" v-for="(room,index) in rooms" :key="index" @click = 'enter(index)'  >
-          <div class="title">{{room.name}}</div>
+          <div class="title">房名:{{room.roomName}}</div>
+          <div class="master">房主:{{room.roomMaster}}</div>
           <div class="into">点击进入房间</div>
         </li>
       </ul>
@@ -56,6 +57,15 @@ export default {
       url:'/api/roomNumber',
     }).then(res=>{
       this.roomNum = res.data.data.roomNumber
+    }).catch(err=>{
+      console.log(err)
+    })
+    this.$axios({
+      method:'get',
+      url:'/users/queryRoom',
+    }).then(res=>{
+      this.rooms = res.data.data
+      console.log(res)
     }).catch(err=>{
       console.log(err)
     })
