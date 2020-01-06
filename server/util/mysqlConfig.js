@@ -6,7 +6,7 @@ var connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'mysql',
-    database: 'users'
+    database: 'webchat'
 });
 
 

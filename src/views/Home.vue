@@ -49,7 +49,7 @@ export default {
         console.log(res)
       })
 
-      this.rooms.push({name:this.cusName})
+      this.rooms.push({roomName:this.cusName,roomMaster:'admin'})
       this.cusName=''
     },
 
