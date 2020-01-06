@@ -1,9 +1,14 @@
 <template>
   <div class="home">
+      <div id="nav">
+      <router-link to="/">聊天房间列表</router-link> |
+      <router-link to="/about">个人中心</router-link>
+    </div>
     <div class="info">
       <div class="number">房间人数:{{roomNum}}</div>
       <input type="text" v-model="cusName" placeholder="请输入房间名">
       <button class="create" @click="createRoom">创建房间</button>
+      <span @click="register">点击注册</span>
     </div>
     <div class="roomlist">
       <ul>
@@ -47,9 +52,17 @@ export default {
       this.rooms.push({name:this.cusName})
       this.cusName=''
     },
+
+    //进入房间
     enter(index){
       this.$router.push({name:'roomChat'})
+    },
+
+    //注册账号
+    register(){
+      this.$router.replace({name:'register'})
     }
+
   },
   created(){
     this.$axios({

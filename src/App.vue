@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">聊天房间列表</router-link> |
-      <router-link to="/about">个人中心</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="scss">
+@import url('./assets/css/reset.css');
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -16,7 +13,6 @@
   text-align: center;
   color: #2c3e50;
 }
-
 #nav {
   padding: 30px;
 
