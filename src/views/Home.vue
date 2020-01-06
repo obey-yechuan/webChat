@@ -2,12 +2,14 @@
   <div class="home">
     <div class="info">
       <div class="number">房间人数:{{roomNum}}</div>
+      <input type="text" v-model="cusName" placeholder="请输入房间名">
       <button class="create" @click="createRoom">创建房间</button>
     </div>
     <div class="roomlist">
       <ul>
         <li class="room" v-for="(room,index) in rooms" :key="index" @click = 'enter(index)'  >
-          <div class="title">{{room.name}}</div>
+          <div class="title">房名:{{room.roomName}}</div>
+          <div class="master">房主:{{room.roomMaster}}</div>
           <div class="into">点击进入房间</div>
         </li>
       </ul>
@@ -23,14 +25,27 @@ export default {
     return {
       tip:[],
       rooms:[],
-      roomNum:''
+      roomNum:'',
+      cusName:''
     }
   },
   components: {
   },
   methods: {
     createRoom(){
-      this.rooms.push({name:'aaa'})
+      this.$axios({
+        method:'post',
+        url:'/users/createRoom',
+        data:{
+          roomName:this.cusName,
+          roomMaster:this.userName || 'admin'
+        }
+      }).then(res=>{
+        console.log(res)
+      })
+
+      this.rooms.push({name:this.cusName})
+      this.cusName=''
     },
     enter(index){
       this.$router.push({name:'roomChat'})
@@ -42,6 +57,15 @@ export default {
       url:'/api/roomNumber',
     }).then(res=>{
       this.roomNum = res.data.data.roomNumber
+    }).catch(err=>{
+      console.log(err)
+    })
+    this.$axios({
+      method:'get',
+      url:'/users/queryRoom',
+    }).then(res=>{
+      this.rooms = res.data.data
+      console.log(res)
     }).catch(err=>{
       console.log(err)
     })
