@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -26,5 +26,5 @@
   }
 }
 ul li{ list-style: none }
-*{margin:0; padding:0; user-select: none}
+*{margin:0; padding:0;  }
 </style>
