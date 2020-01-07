@@ -37,33 +37,36 @@ router.post('/register',function(req,res){
   }else{
     //判断用户是否存在
     connection.getConnection(function(err,connect){
-      var sql = `select admin from users where admin='${req.body.admin}'`
+      var sql = `select admin from users where email='${req.body.email}'`
       connect.query(sql,function(err,result,fields){
         if(err) throw err;
         if(result.length >= 1){
           res.json({
             data:{
               status:'fail',
-              message: '用户已存在'
+              message: '邮箱已被注册',
             }
+          })
+          return false
+        }else{
+          connection.getConnection(function(err,connect){
+            let hmac = crypto.createHmac('md5','ye')
+            hmac.update(req.body.password);
+            let crypt_password = hmac.digest('hex')
+            var sql = `insert into users values('${req.body.admin}','${crypt_password}','${new Date().getTime()}','${req.body.email}')`
+            connect.query(sql,function(err,result,fields){
+              connect.release();
+              if(err) throw err;
+              res.json({data: {
+                status: 'success',
+                message: '注册成功'
+              }})
+            })
           })
         }
       })
     })
-    connection.getConnection(function(err,connect){
-      let hmac = crypto.createHmac('md5','ye')
-      hmac.update(req.body.password);
-      let crypt_password = hmac.digest('hex')
-      var sql = `insert into users values('${req.body.admin}','${crypt_password}','${new Date().getTime()}','${req.body.email}')`
-      connect.query(sql,function(err,result,fields){
-        connect.release();
-        if(err) throw err;
-        res.json({data: {
-          status: 'success',
-          message: '注册成功'
-        }})
-      })
-    })
+    
   }
 
 })
@@ -71,9 +74,10 @@ router.post('/register',function(req,res){
 //登录接口
 router.post('/login',function(req,res){
   connection.getConnection(function(err,connect){
-    var sql = `select password from users where admin='${req.body.admin}' `
+    var sql = `select * from users where admin='${req.body.email}' `
     connect.query(sql,function(err,result,fields){
       connect.release();
+      console.log(result)
       if(err) throw err;
       let hmac = crypto.createHmac('md5','ye')
       hmac.update(req.body.password);
@@ -81,7 +85,11 @@ router.post('/login',function(req,res){
       if(crypt_password == result[0].password){
         res.json({
           status:'success',
-          message: '登录成功'
+          message: '登录成功',
+          data:{
+            admin:result[0].admin,
+            email:result[0].email
+          }
         })
       }else{
         res.json({

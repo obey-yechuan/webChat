@@ -4,30 +4,34 @@
       <i class="iconfont icon-git" id="icon1"></i>
 
       <transition name="sign">
-        <div v-if="isSignIn" :key="signIn" class="input_body" id="input_body1">
+        <div v-if="isSignIn" class="input_body" id="input_body1">
           <div class="login_username">
             <i class="iconfont icon-icon_email"></i>
-            <input type="text" maxlength="30" placeholder="请输入您的邮箱地址" class="login_input" />
+            <input v-model="email" type="text" maxlength="30" placeholder="请输入您的邮箱地址" class="login_input" />
           </div>
           <div class="login_password login_username">
             <i class="iconfont icon-icon_password"></i>
-            <input type="text" maxlength="30" placeholder="请输入您的密码" class="login_input" />
+            <input v-model="password" type="text" maxlength="30" placeholder="请输入您的密码" class="login_input" />
           </div>
           <!-- 确认登录 -->
-          <button class="login_btn">登录</button>
+          <button @click="signIn" class="login_btn">登录</button>
         </div>
 
-        <div v-else :key="signUp" class="input_body input_box" id="input_body2">
+        <div v-else class="input_body input_box" id="input_body2">
           <div class="login_username">
             <i class="iconfont icon-icon_email"></i>
-            <input type="text" maxlength="30" placeholder="请输入您的邮箱地址" class="login_input" />
+            <input v-model="email" type="text" maxlength="30" placeholder="请输入您的邮箱地址" class="login_input" />
           </div>
           <div class="login_password login_username">
             <i class="iconfont icon-iconuser"></i>
-            <input type="text" maxlength="30" placeholder="请输入您的昵称" class="login_input" />
+            <input v-model="admin" type="text" maxlength="30" placeholder="请输入您的昵称" class="login_input" />
+          </div>
+          <div class="login_admin login_username">
+            <i class="iconfont icon-iconuser"></i>
+            <input v-model="password" type="text" maxlength="30" placeholder="请输入您的密码" class="login_input" />
           </div>
           <!-- 确认登录 -->
-          <button class="login_btn">验证</button>
+          <button class="login_btn" @click="signUp">注册</button>
         </div>
       </transition>
 
@@ -48,13 +52,52 @@
   </div>
 </template>
 <script>
+import { stringify } from 'querystring';
 export default {
   data() {
     return {
-      isSignIn: Boolean || true
+      isSignIn: Boolean || true,
+      admin:'',
+      password:'',
+      email:''
     };
   },
-  methods: {},
+  methods: {
+    signUp(){
+      this.$axios({
+        method:'post',
+        url:'/api/register',
+        data:{
+          admin:this.admin,
+          password:this.password,
+          email:this.email
+        }
+      }).then(res=>{
+        if(res.data.data.status == 'success'){
+          this.isSignIn = true
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+    signIn(){
+      this.$axios({
+        method:'post',
+        url:'/api/login',
+        data:{
+          password:this.password,
+          email:this.email
+        }
+      }).then(res=>{
+        if(res.data.status == 'success'){
+          localStorage.setItem('chatUser',JSON.stringify(res.data.data))
+          this.$router.push({name:'home'})
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  },
   watch: {
     isSignIn: function() {
       if (this.isSignIn) {
