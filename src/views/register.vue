@@ -82,7 +82,7 @@ export default {
     },
     signIn(){
       this.$axios({
-        method:'post',
+        method:'post', 
         url:'/api/login',
         data:{
           password:this.password,
@@ -90,7 +90,7 @@ export default {
         }
       }).then(res=>{
         if(res.data.status == 'success'){
-          localStorage.setItem('chatUser',JSON.stringify(res.data.data))
+          localStorage.setItem('chatUser',JSON.stringify(res.data.data.token))
           this.$router.push({name:'home'})
         }
       }).catch(err=>{

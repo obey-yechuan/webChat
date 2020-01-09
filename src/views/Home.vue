@@ -9,6 +9,7 @@
       <input type="text" v-model="cusName" placeholder="请输入房间名">
       <button class="create" @click="createRoom">创建房间</button>
       <span @click="register">点击注册</span>
+      <span ></span>
     </div>
     <div class="roomlist">
       <ul>
@@ -38,6 +39,7 @@ export default {
   },
   methods: {
     createRoom(){
+
       this.$axios({
         method:'post',
         url:'/users/createRoom',
@@ -46,7 +48,6 @@ export default {
           roomMaster:this.userName || 'admin'
         }
       }).then(res=>{
-        console.log(res)
       })
 
       this.rooms.push({roomName:this.cusName,roomMaster:'admin'})
