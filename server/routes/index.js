@@ -54,12 +54,7 @@ router.post('/register', function (req, res) {
             let hmac = crypto.createHmac('md5', 'ye')
             hmac.update(req.body.password);
             let crypt_password = hmac.digest('hex')
-            var token = jwt.sign({
-              data: crypt_password
-            }, 'sscret', {
-              expiresIn: 60 * 60
-            })
-            console.log(token)
+
             var sql = `insert into users values('${req.body.admin}','${crypt_password}','${new Date().getTime()}','${req.body.email}')`
             connect.query(sql, function (err, result, fields) {
               connect.release();
@@ -95,9 +90,10 @@ router.post('/login', function (req, res) {
         let crypt_password = hmac.digest('hex')
         //验证用户密码
         if (crypt_password == result[0].password) {
+
           var token = jwt.sign({
-            data:crypt_password
-          },'secret',{expiresIn: 10})
+            data:req.body.email
+          },'secret',{expiresIn: 20})
           res.json({
             status: 'success',
             message: '登录成功',
@@ -126,13 +122,22 @@ router.post('/login', function (req, res) {
 })
 
 //判断用户状态
+/**
+ * 参数1:用户邮箱token
+ */
 router.post('/status',function(req,res){
     jwt.verify(req.body.token, 'secret', function(err,decoded){
-      if(err) console.log(err)
-      console.log(decoded)
-      res.json({
-        data:decoded
-      })
+      if(err){
+        res.json({
+          status:'fail',
+          message:'验证已过期'
+        })
+      }else{
+        res.json({
+          status:'success',
+          message:'用户登录中'
+        })
+      }
     })
 
 })

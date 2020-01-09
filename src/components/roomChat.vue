@@ -140,6 +140,8 @@ export default {
       };
     }
   },
+  beforeCreate(){
+  },
   mounted() {
     var socket;
     if (!window.WebSocket) {

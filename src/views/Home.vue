@@ -39,7 +39,6 @@ export default {
   },
   methods: {
     createRoom(){
-
       this.$axios({
         method:'post',
         url:'/users/createRoom',
@@ -79,7 +78,6 @@ export default {
       url:'/users/queryRoom',
     }).then(res=>{
       this.rooms = res.data.data
-      console.log(res)
     }).catch(err=>{
       console.log(err)
     })

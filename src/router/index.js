@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import $axios from '../util/axios'
 
 Vue.use(VueRouter)
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
   {
@@ -21,13 +26,37 @@ const routes = [
   {
     path: '/roomChat',
     name: 'roomChat',
-    component: () => import('../components/roomChat.vue')
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import('../views/register.vue')
+    component: () => import('../components/roomChat.vue'),
+    beforeEnter(to, from, next){
+      var token = JSON.parse(localStorage.getItem('chatUser'))
+      //不能获取this,手动调用$axios
+      if (to.name == 'roomChat') {
+        $axios({
+          method: 'post',
+          url: '/api/status',
+          data: {
+            token: token
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status != 'success') {
+            next({
+              name: 'register'
+            })
+          } else {
+            next()
+          }
+          })
+      } else {
+        next()
+      }
   }
+},
+{
+  path: '/register',
+    name: 'register',
+      component: () => import('../views/register.vue')
+}
 ]
 
 const router = new VueRouter({
