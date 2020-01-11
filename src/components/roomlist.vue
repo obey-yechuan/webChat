@@ -1,7 +1,8 @@
 <template>
   <div class="home">
       <div id="nav">
-      <router-link to="/">聊天房间列表</router-link> |
+      <router-link to="/">公共聊天房间列表</router-link> |
+      <router-link to="/personRoom">个人创建房间列表</router-link> |
       <router-link to="/about">个人中心</router-link>
     </div>
     <div class="info">

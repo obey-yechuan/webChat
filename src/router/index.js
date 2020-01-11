@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import $axios from '../util/axios'
 
 Vue.use(VueRouter)
@@ -12,8 +11,13 @@ VueRouter.prototype.push = function push (location) {
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'commonRooms',
+    component: ()=>import('../components/roomlist')
+  },
+  {
+    path: '/commonRooms',
+    name: 'commonRooms',
+    component: ()=>import('../components/roomlist')
   },
   {
     path: '/about',
@@ -56,6 +60,11 @@ const routes = [
   path: '/register',
     name: 'register',
       component: () => import('../views/register.vue')
+},
+{
+  path: '/personRooms',
+  name: 'personRooms',
+  component: ()=>import('../components/roomlist.vue')
 }
 ]
 
