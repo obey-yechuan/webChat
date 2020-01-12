@@ -201,10 +201,6 @@ a {
   font-style: normal;
 }
 
-/*common*/
-i.down:before{ content:'\e800';}
-i.lock:before{ content:'\e806';}
-i.logout:before{ content:'\e804';}
 
 /*chatbox*/
 .chatbox{  background:#176994 url(../assets/images/wood.jpg);overflow:hidden; height:100%; width:100%; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; background-color:rgba(255,255,255,1);}
