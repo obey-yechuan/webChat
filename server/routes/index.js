@@ -38,41 +38,51 @@ router.post('/register', function (req, res) {
   } else {
     //判断用户是否存在
     connection.getConnection(function (err, connect) {
-      var sql = `select admin from users where email='${req.body.email}'`
-      connect.query(sql, function (err, result, fields) {
-        if (err) throw err;
-        if (result.length >= 1) {
+      var sql = `select * from users where admin='${req.body.admin}'`
+      connect.query(sql, function(err, result, fields){
+        if(err) throw err;
+        if(result.length>=1){
           res.json({
             data: {
               status: 'fail',
-              message: '邮箱已被注册',
+              message: '用户名已被注册',
             }
           })
           return false
-        } else {
-          connection.getConnection(function (err, connect) {
-            let hmac = crypto.createHmac('md5', 'ye')
-            hmac.update(req.body.password);
-            let crypt_password = hmac.digest('hex')
-
-            var sql = `insert into users values('${req.body.admin}','${crypt_password}','${new Date().getTime()}','${req.body.email}')`
-            connect.query(sql, function (err, result, fields) {
-              connect.release();
-              if (err) throw err;
+        }else if(result.length == 0){
+          sql = `select admin from users where email='${req.body.email}'`
+          connect.query(sql, function (err, result, fields) {
+            if (err) throw err;
+            if (result.length >= 1) {
               res.json({
                 data: {
-                  status: 'success',
-                  message: '注册成功'
+                  status: 'fail',
+                  message: '邮箱已被注册',
                 }
               })
-            })
+              return false
+            }else{
+              let hmac = crypto.createHmac('md5', 'ye')
+              hmac.update(req.body.password);
+              let crypt_password = hmac.digest('hex')
+    
+              var sql = `insert into users values('${req.body.admin}','${crypt_password}','${new Date().getTime()}','${req.body.email}')`
+              connect.query(sql, function (err, result, fields) {
+                connect.release();
+                if (err) throw err;
+                res.json({
+                  data: {
+                    status: 'success',
+                    message: '注册成功'
+                  }
+                })
+              })
+            }
           })
         }
       })
     })
-
   }
-
 })
 
 //登录接口

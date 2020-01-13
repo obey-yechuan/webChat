@@ -73,6 +73,7 @@ export default {
           email:this.email
         }
       }).then(res=>{
+        console.log(res)
         if(res.data.data.status == 'success'){
           this.isSignIn = true
         }

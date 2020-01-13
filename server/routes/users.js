@@ -40,4 +40,24 @@ router.get('/queryRoom',function(req,res,next){
   })
 })
 
+// 查询个人房间
+
+router.get('/personRooms',function(req,res,next){
+  if(!req.body.email){
+    res.json({
+      status:'fail',
+      message:'请先登录'
+    })
+  }else{
+    connection.getConnection(function(err,connect){
+      var sql = `select * from rooms where roomMaster='${req.body.email}'`
+      connect.query(sql,function(err,result,fields){
+        connect.release()
+        if(err) throw err;
+        res.json({message:'ok',data:result})
+  
+      })
+    })
+  }
+})
 module.exports = router;
